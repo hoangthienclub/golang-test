@@ -3,7 +3,6 @@ package ginrestaurant
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 	"test/common"
 	"test/lib/appctx"
 	restaurantbusiness "test/module/restaurant/business"
@@ -14,7 +13,10 @@ func DeleteRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := appCtx.GetMainDBConnection()
 
-		id, err := strconv.Atoi(c.Param("id"))
+		//id, err := strconv.Atoi(c.Param("id"))
+
+		uid, err := common.FromBase58(c.Param("id"))
+
 		if err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
@@ -22,7 +24,7 @@ func DeleteRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 		store := restaurantstorage.NewSQLStore(db)
 		business := restaurantbusiness.NewDeleteRestaurantBusiness(store)
 
-		if err := business.DeleteRestaurant(c.Request.Context(), id); err != nil {
+		if err := business.DeleteRestaurant(c.Request.Context(), int(uid.GetLocalID())); err != nil {
 			panic(err)
 		}
 
