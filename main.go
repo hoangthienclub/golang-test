@@ -30,6 +30,18 @@ type RestaurantUpdate struct {
 func (RestaurantUpdate) TableName() string { return Restaurant{}.TableName() }
 
 func main() {
+	//test := Restaurant{
+	//	Id:   1,
+	//	Name: "thien",
+	//	Addr: "la",
+	//}
+	//
+	//jsonByte, err := json.Marshal(test)
+	//log.Println(string(jsonByte), err)
+	//
+	//json.Unmarshal([]byte("{\"id\":1,\"name\":\"thien\",\"addr\":\"la\"}"), &test)
+	//log.Println(test)
+
 	dsn := os.Getenv("MYSQL_CONN_STRING")
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
